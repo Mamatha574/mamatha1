@@ -1,8 +1,7 @@
 package com.capgemini.librarymanagementsystem.dao;
 
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.capgemini.librarymanagementsystem.db.DataBase;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
@@ -38,8 +37,8 @@ public class StudentDAOImplementation implements StudentDAO {
 	}
 
 
-	public LinkedList<BookBean> searchBookTitle(String bookName) {
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+	public ArrayList<BookBean> searchBookTitle(String bookName) {
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -63,8 +62,8 @@ public class StudentDAOImplementation implements StudentDAO {
 	}
 
 
-	public LinkedList<BookBean> searchBookAuthor(String bookAuthor) {
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+	public ArrayList<BookBean> searchBookAuthor(String bookAuthor) {
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -85,8 +84,8 @@ public class StudentDAOImplementation implements StudentDAO {
 	}
 
 
-	public LinkedList<BookBean> searchBookType(String bookType) {
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+	public ArrayList<BookBean> searchBookType(String bookType) {
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -107,8 +106,8 @@ public class StudentDAOImplementation implements StudentDAO {
 	}
 
 
-	public LinkedList<Integer> getBookIds() {
-		LinkedList<Integer> idList=new LinkedList<Integer>();
+	public ArrayList<Integer> getBookIds() {
+		ArrayList<Integer> idList=new ArrayList<Integer>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -120,7 +119,7 @@ public class StudentDAOImplementation implements StudentDAO {
 	}
 
 
-	public LinkedList<BookBean> getBooksInfo() {
+	public ArrayList<BookBean> getBooksInfo() {
 		return DataBase.book;
 	}
 

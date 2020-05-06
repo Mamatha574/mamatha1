@@ -3,13 +3,33 @@ package com.capgemini.librarymanagementsystem.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class AdminBean implements Serializable {
 	private int adminId;
 	private String adminName;
 	private String email;
-	private long phone;
+	private Long phone;
 	private String password;
 	
+	
+	public AdminBean(int adminId, String adminName, String email, Long phone, String password) {
+		super();
+		this.adminId = adminId;
+		this.adminName = adminName;
+		this.email = email;
+		this.phone = phone;
+		this.password = password;
+	}
+	
+	
+	
+
+	public AdminBean() {
+		super();
+	}
+
+
+
 
 	public int getAdminId() {
 		return adminId;
@@ -30,10 +50,10 @@ public class AdminBean implements Serializable {
 		this.email = email;
 	}
 	
-	public long getPhone() {
+	public Long getPhone() {
 		return phone;
 	}
-	public void setPhone(long phone) {
+	public void setPhone(Long phone) {
 		this.phone = phone;
 	}
 	public String getPassword() {
@@ -42,5 +62,11 @@ public class AdminBean implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "AdminBean [adminId=" + adminId + ", adminName=" + adminName + ", email=" + email + ", phone=" + phone
+				+ ", password=" + password + "]";
+	}
+	
 
 }

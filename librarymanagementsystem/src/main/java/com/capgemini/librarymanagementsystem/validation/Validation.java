@@ -32,25 +32,25 @@ public class Validation {
 		}
 		return result;
 	}
-	public boolean validatedMobile(long mobile) throws LMSException {
-		String mobileRegEx = "(0/91)?[6/9][0-9]{9}" ;
+	public boolean validatedMobile(Long mobile) throws LMSException {
+		String mobileRegEx = "(0/91)?[6-9][0-9]{9}" ;
 		boolean result = false;
 		if (Pattern.matches(mobileRegEx, String.valueOf(mobile))) {
 			result = true;
 		} else {
-			throw new LMSException("Mobile Number  will start with  6 or 9 and It should contain 10 numbers");
+			throw new LMSException("Mobile Number  will start between  6 to 9 and It should contain 10 numbers");
 		}
 		return result;
 	}
 	public boolean validatedEmail(String email) throws LMSException {
-		String emailRegEx = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.]+[a-z]$";
+		String emailRegEx = "[\\w&&[^_]]{3,50}[@]{1}\\D{2,50}[.]{1}\\D{2,50}";
 		boolean result = false;
 		Pattern pattern = Pattern.compile(emailRegEx);
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {
 			result = true;
 		} else {
-			throw new LMSException("Enter Correct Email");
+			throw new LMSException("Enter Correct Email (@ and extensions(.com))");
 		}
 		return result;
 	}

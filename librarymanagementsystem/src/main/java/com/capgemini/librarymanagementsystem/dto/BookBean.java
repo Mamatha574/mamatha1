@@ -2,6 +2,7 @@ package com.capgemini.librarymanagementsystem.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class BookBean implements Serializable {
 	private int bookId;
 	private String bookName;
@@ -10,6 +11,7 @@ public class BookBean implements Serializable {
 	private String publisherName;
 	private String issueDate;
 	private String returnDate;
+	
 	public int getBookId() {
 		return bookId;
 	}
@@ -52,7 +54,4 @@ public class BookBean implements Serializable {
 	public void setReturnDate(String returnDate) {
 		this.returnDate = returnDate;
 	}
-
-	
-
 }

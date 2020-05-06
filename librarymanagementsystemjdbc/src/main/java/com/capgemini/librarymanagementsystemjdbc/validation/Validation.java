@@ -38,14 +38,14 @@ public class Validation {
 		return result;
 	}
 	public boolean validatedEmail(String email) throws LMSException {
-		String emailRegEx = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.]+[a-z]$";
+		String emailRegEx = "[\\w&&[^_]]{3,50}[@]{1}\\D{2,50}[.]{1}\\D{2,50}";
 		boolean result = false;
 		Pattern pattern = Pattern.compile(emailRegEx);
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {
 			result = true;
 		} else {
-			throw new LMSException("Enter Correct Email");
+			throw new LMSException("Enter Correct Email (@ and extensions(.com))");
 		}
 		return result;
 	}

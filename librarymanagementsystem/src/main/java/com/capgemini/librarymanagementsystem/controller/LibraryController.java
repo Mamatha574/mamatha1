@@ -1,10 +1,11 @@
 package com.capgemini.librarymanagementsystem.controller;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.capgemini.librarymanagementsystem.db.DataBase;
 import com.capgemini.librarymanagementsystem.dto.AdminBean;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
 import com.capgemini.librarymanagementsystem.dto.RequestBean;
@@ -20,47 +21,196 @@ public class LibraryController {
 	public static void main(String[] args) {
 		doReg();
 	}
+	public static Scanner scanner = new Scanner(System.in);
+	private static final Validation validation = new Validation();
+	public	static final AdminServiceDAO service = LibraryFactory.getAdminService();
+	public static final	StudentServiceDAO service1 = LibraryFactory.getUserService();
+
+	public static int checkChoice() {
+		boolean flag = false;
+		int choice = 0;
+		do {
+			try {
+				choice = scanner.nextInt();
+				flag = true;
+			} catch (InputMismatchException e) {
+				flag = false;
+				System.err.println("Invalid Choice, It should contails only digits");
+				scanner.next();
+			} catch (LMSException e) {
+				flag = false;
+				System.err.println(e.getMessage());
+			}
+		} while (!flag);
+		return choice;
+	}
+
+	public static int checkId() {
+		boolean flag = false;
+		int id = 0;
+		do {
+			try {
+				id = scanner.nextInt();
+				validation.validatedId(id);
+				flag = true;
+			} catch (InputMismatchException e) {
+				flag = false;
+				System.err.println("Invalid Id,It should contails only digits");
+				scanner.next();
+			} catch (LMSException e) {
+				flag = false;
+				System.err.println(e.getMessage());
+			}
+		} while (!flag);
+
+		return id;
+	}
+
+	public static String checkName() {
+		String name = null;
+		boolean flag = false;
+		do {
+			try {
+				name = scanner.nextLine();
+				validation.validatedName(name);
+				flag = true;
+			} catch (LMSException e) {
+				flag = false;
+				System.err.println(e.getMessage());
+			}
+		} while (!flag);
+		// return userName.toLowerCase();
+		return name;
+
+	}
+
+	public static String checkEmailId() {
+		String emailId = null;
+		boolean flag = false;
+		do {
+			try {
+				emailId = scanner.next();
+				validation.validatedEmail(emailId);
+				flag = true;
+			} catch (LMSException e) {
+				flag = false;
+				System.err.println(e.getMessage());
+			}
+		} while (!flag);
+		emailId.toLowerCase();
+		return emailId;
+	}
+
+	public static String checkPassword() {
+		String password = null;
+		boolean flag = false;
+		do {
+			try {
+				password = scanner.next();
+				validation.validatedPassword(password);
+				flag = true;
+			} catch (LMSException e) {
+				flag = false;
+				System.err.println(e.getMessage());
+			}
+		} while (!flag);
+
+		return password;
+	}
+
+	private static Long checkPhone() {
+		boolean flag = false;
+		Long phone =0L;
+		do {
+			try {
+				phone = scanner.nextLong();
+				flag = true;
+			} catch (InputMismatchException e) {
+				flag = false;
+				System.err.println("Phonenumber should contains only digits ");
+				scanner.next();
+			}
+		} while (!flag);
+		return phone;
+	}
+
+	private static boolean checkAvailability() {
+		boolean isAvail = false;
+		boolean flag = false;
+		do {
+			try {
+				isAvail = scanner.nextBoolean();
+				flag = true;
+			} catch (InputMismatchException e) {
+				System.err.println("Enter Boolean value true/false");
+				flag = false;
+				scanner.next();
+			}
+		} while (!flag);
+		return isAvail;
+	}
+
 
 	public static void doReg() {
 
+		DataBase.addToDatabase();
+
+		AdminBean adminBean = null;
+		//BookBean bookBean = null;
+
 		boolean flag = false;
+		int choice = 0;
+		int i = 0;
+		int userChoice = 0;
+		int userId = 0;
+		int bookId = 0;
+		Long mobile=  0L;
+		String emailId = null;
+		String password = null;
+		String newPassword = null;
+		String name = null;
+		String bookName= null;
+		String bookAuthor=null;
+		String bookPublisherName= null;
+		String bookTitle = null;
+		String bookCategory=null;
+		boolean isAvail = false;
 
-		int id1 = 0; 
-		String name1 = null; 
-		long mobile1 = 0;
-		String email1 = null;
-		String password1 = null;
 
-		int id2 = 0; 
-		String name2 = null; 
-		long mobile2 = 0;
-		String email2 = null;
-		String password2 = null;
+		//		int id1 = 0; 
+		//		String name1 = null; 
+		//		long mobile1 = 0;
+		//		String email1 = null;
+		//		String password1 = null;
+		//
+		//		int id2 = 0; 
+		//		String name2 = null; 
+		//		long mobile2 = 0;
+		//		String email2 = null;
+		//		String password2 = null;
+		//
+		//		int bookId = 0; 
+		//		String bookAuthor = null; 
+		//		String bookName = null;
+		//		String bookCategory = null;
+		//		String bookPublisherName = null;
+		//		//String bookIssuedate = null;
+		//		//String bookReturndate = null;
 
-		int bookId = 0; 
-		String bookAuthor = null; 
-		String bookName = null;
-		String bookCategory = null;
-		String bookPublisherName = null;
-		String bookIssuedate = null;
-		String bookReturndate = null;
-
-		Validation validation = new Validation();
-
-		Scanner scanner = new Scanner(System.in);
 
 		do {
-			try {
+			
 				System.out.println("----------WELCOME TO LIBRARY-----------");
 				System.out.println("-----------------------------------");
 				System.out.println("Press 1 to Admin Page");
 				System.out.println("Press 2 to Student Page");
 				System.out.println("-----------------------------------");
 
-				int i = scanner.nextInt();
+				i= checkChoice();
+
 				switch(i) {
 				case 1:
-					AdminServiceDAO service = LibraryFactory.getAdminService();
+
 					do{
 						try {
 							System.out.println("-----------------------------------");
@@ -68,90 +218,37 @@ public class LibraryController {
 							System.out.println("Press 2 to Admin Login");
 							System.out.println("Press 3 to Exit");
 							System.out.println("-----------------------------------");
-							int choice = scanner.nextInt();
-							switch (choice) {
+							i = checkChoice();
+							switch (i) {
 							case 1:
-								do {
-									try {
-										System.out.println("Enter ID :");
-										id1 = scanner.nextInt();
-										validation.validatedId(id1);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Id should contains only digits");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
+								System.out.println("Enter Admin Registration Details");
+								System.out.println("---------------------------------");
+								//								System.out.println("Enter User id :");
+								//								userId = checkId();
+								//								userId = rand.nextInt(1000); 
+								userId = (int) (Math.random()*1000);
+								if(userId <= 100) {
+									userId =userId + 100;
+								}
 
-								do {
-									try {
-										System.out.println("Enter Name :");
-										name1 = scanner.next();
-										validation.validatedName(name1);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Name should contains only Alphabates");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
+								System.out.println("User Id : "+ userId);
+								scanner.nextLine();
+								System.out.println("Enter User name");
+								name = checkName();
+								System.out.println("Enter mobile number");
+								mobile= checkPhone();
+								System.out.println("Enter User Email Id");
+								emailId = checkEmailId();
+								System.out.println("Enter User password");
+								password = checkPassword();
 
-								do {
-									try {
-										System.out.println("Enter Mobile :");
-										mobile1 = scanner.nextLong();
-										validation.validatedMobile(mobile1);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Mobile Number  should contains only numbers");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
-
-								do {
-									try {
-										System.out.println("Enter Email :");
-										email1 = scanner.next();
-										validation.validatedEmail(email1);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Email should be proper ");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
-
-								do {
-									try {
-										System.out.println("Enter Password :");
-										password1 = scanner.next();
-										validation.validatedPassword(password1);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Enter correct Password ");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
 
 								AdminBean bean = new AdminBean();
-								bean.setAdminId(id1);
-								bean.setAdminName(name1);
-								bean.setPhone(mobile1);
-								bean.setEmail(email1);
-								bean.setPassword(password1);
+								bean.setAdminId(userId);
+								bean.setAdminName(name);
+								bean.setPhone(mobile);
+								bean.setEmail(emailId);
+								bean.setPassword(password);
 
 								boolean check = service.register(bean);
 								if(check) {
@@ -164,11 +261,11 @@ public class LibraryController {
 
 							case 2:
 								System.out.println("Enter email :");
-								String email = scanner.next();
+								emailId = checkEmailId();
 								System.out.println("Enter Password :");
-								String password = scanner.next();
+								password = checkPassword();
 								try {
-									AdminBean login = service.auth(email, password);
+									AdminBean login = service.auth(emailId, password);
 									System.out.println("Logged in");
 
 									do {
@@ -186,91 +283,32 @@ public class LibraryController {
 											System.out.println("Press 10 Receive Returned Book");
 											System.out.println("Press 11 to Main");
 											System.out.println("-----------------------------------");
-											int choice1 = scanner.nextInt();
-											switch (choice1) {
+											i = checkChoice();
+											switch (i) {
 											case 1:
 
-												do {
-													try {
-														System.out.println("Enter Book-ID :");
-														bookId = scanner.nextInt();
-														validation.validatedId(bookId);
-														flag = true;
-													} catch (InputMismatchException e) {
-														flag = false;
-														System.err.println("Id should contains only digits");
-													} catch (LMSException e) {
-														flag = false;
-														System.err.println(e.getMessage());
-													}
-												} while (!flag);
+												System.out.println("Add Book Details: ");
+												System.out.println("---------------------------");
+												//												System.out.println("Enter book Id: ");
+												//												bookId = checkId();
+												//												bookId = rand.nextInt(1000);
+												bookId = (int) (Math.random()*1000);
+												if(bookId <= 100) {
+													bookId =bookId + 100;
+												}
+												System.out.println("Book Id : "+bookId);
 
-
-
-
-												do {
-													try {
-														System.out.println("Enter Book Name :");
-														bookName = scanner.next();
-														validation.validatedName(bookName);
-														flag = true;
-													} catch (InputMismatchException e) {
-														flag = false;
-														System.err.println("Book-Name should contains only Alphabets");
-													} catch (LMSException e) {
-														flag = false;
-														System.err.println(e.getMessage());
-													}
-												} while (!flag);
-
-
-
-												do {
-													try {
-														System.out.println("Enter Author :");
-														bookAuthor = scanner.next();
-														validation.validatedName(bookAuthor);
-														flag = true;
-													} catch (InputMismatchException e) {
-														flag = false;
-														System.err.println("Author Name should contains only Alphabates");
-													} catch (LMSException e) {
-														flag = false;
-														System.err.println(e.getMessage());
-													}
-												} while (!flag);
-
-
-												do {
-													try {
-														System.out.println("Enter Category :");
-														bookCategory = scanner.next();
-														validation.validatedName(bookCategory);
-														flag = true;
-													} catch (InputMismatchException e) {
-														flag = false;
-														System.err.println("Book-Category should contains only Alphabates");
-													} catch (LMSException e) {
-														flag = false;
-														System.err.println(e.getMessage());
-													}
-												} while (!flag);
-
-
-												do {
-													try {
-														System.out.println("Enter PublisherName :");
-														bookPublisherName = scanner.next();
-														validation.validatedName(bookPublisherName);
-														flag = true;
-													} catch (InputMismatchException e) {
-														flag = false;
-														System.err.println("Book-PublisherName should contains only Alphabates");
-													} catch (LMSException e) {
-														flag = false;
-														System.err.println(e.getMessage());
-													}
-												} while (!flag);
+												System.out.println("Enter book Book Title: ");
+												scanner.nextLine();
+												bookTitle = checkName();
+												System.out.println("Enter Book Name: ");
+												bookName = checkName();
+												System.out.println("Enter Book Author : ");
+												bookAuthor = checkName();
+												System.out.println("Enter Publisher Name: ");
+												bookPublisherName = checkName();
+												System.out.println("Enter Book Category: ");
+												bookCategory=checkName();
 
 												BookBean bean1 = new BookBean();
 												bean1.setBookId(bookId);	
@@ -280,6 +318,7 @@ public class LibraryController {
 												bean1.setCategory(bookCategory);
 												//bean1.setIssuedate(bookIssuedate);
 												boolean check2 = service.addBook(bean1);
+												
 												if(check2) {
 													System.out.println("Book Added");
 												} else {
@@ -288,74 +327,74 @@ public class LibraryController {
 												break;
 											case 2:
 												System.out.println("Search the book by the Author Name:");
-												String author = scanner.next();
+												bookAuthor = scanner.nextLine();
+												bookAuthor=checkName();
 
 												BookBean bean3 = new BookBean();
-												bean3.setBookAuthor(author);
-												List<BookBean> bookauthor = service.searchBookAuthor(author);
+												bean3.setBookAuthor(bookAuthor);
+												List<BookBean> bookauthor = service.searchBookAuthor(bookAuthor);
 												for (BookBean bookBean : bookauthor) {
 
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),
+																bookBean.getBookName(),bookBean.getBookAuthor(),bookBean.getCategory(),bookBean.getPublisherName()));
+														
 													} else {
 														System.out.println("No books are available written by this author");
 													}
 												}
 												break;
+												
 											case 3:
-												System.out.println("  Search the book by the Book_Title :");
-												String bookTitle = scanner.next();
+												System.out.println("  Search the book by the BookTitle :");
+												bookTitle=checkName();
 
 												BookBean bean4 = new BookBean();
 												bean4.setBookName(bookTitle);
 												List<BookBean> booktitle = service.searchBookTitle(bookTitle);
 												for (BookBean bookBean : booktitle) {	
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor(),
+																bookBean.getCategory(),bookBean.getPublisherName()));
 													} else {
 														System.out.println("No books are available with this title.");
 													}
 												}
 												break;
+												
 											case 4:
 												System.out.println("Search the book by the Book_Category :");
-												String category = scanner.next();
+												bookCategory = checkName();
+
 
 												BookBean bean5 = new BookBean();
-												bean5.setCategory(category);
-												List<BookBean> bookIds = service.searchBookType(category);
+												bean5.setCategory(bookCategory);
+												List<BookBean> bookIds = service.searchBookType(bookCategory);
 												for (BookBean bookBean : bookIds) {
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor(),
+																bookBean.getCategory(),bookBean.getPublisherName()));
+														
 													} else {
 														System.out.println("No books are available with this Id.");
 													}
 												}
 												break;
+												
 											case 5:
 												System.out.println("Enter the book_Id to delete :");
-												int book_Id = scanner.nextInt();
-												if (book_Id == 0) {
+												bookId = checkId();
+												if (bookId == 0) {
 													System.out.println("Enter the Valid Book_Id");
 												} else {
 													BookBean bean6 = new BookBean();
-													bean6.setBookId(book_Id);
-													boolean remove = service.removeBook(book_Id);
+													bean6.setBookId(bookId);
+													boolean remove = service.removeBook(bookId);
 													if (remove) {
 														System.out.println("The Book is removed");
 													} else {
@@ -365,16 +404,17 @@ public class LibraryController {
 												break;
 
 											case 6:
-												LinkedList<BookBean> info = service.getBooksInfo();
+												
+												ArrayList<BookBean> info = service.getBooksInfo();
 												for (BookBean bookBean : info) {
 
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",
+																bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor()
+																,bookBean.getCategory(),bookBean.getPublisherName()));
+														
 													} else {
 														System.out.println("Books info is not present");
 													}
@@ -384,12 +424,12 @@ public class LibraryController {
 												StudentBean userBean2 = new StudentBean();
 												BookBean bookBean2 = new BookBean();
 												System.out.println("enter Book Id");
-												int bId = scanner.nextInt();
+												bookId = checkId();
 												System.out.println("enter User Id");
-												int uId = scanner.nextInt();
+												userId = checkId();
 
-												bookBean2.setBookId(bId);
-												userBean2.setStudentId(uId);
+												bookBean2.setBookId(bookId);
+												userBean2.setStudentId(userId);
 
 												try {
 													boolean isIssued = service.bookIssue(userBean2, bookBean2);
@@ -410,12 +450,11 @@ public class LibraryController {
 
 													List<StudentBean> userInfos = service.showUsers();
 													for (StudentBean infos : userInfos) {
-
-														System.out.println("User id ---------- " + infos.getStudentId());
-														System.out.println("User Name -------- " + infos.getStudentName());
-														System.out.println("User Email------ " + infos.getEmail());
-														System.out.println("User No Of Books Borrowed ------- " + infos.getBooksBorrowed());
-
+														System.out.println(String.format("%-10s %-20s %-30s %-25s", "USER ID", "NAME",
+																"EMAIL ID", "NO OF BOOKS BORROWED"));
+														System.out.println(String.format("%-10s %-20s %-30s %-25s %-5s",
+																infos.getStudentId(),infos.getStudentName(),infos.getEmail(),infos.getBooksBorrowed()));
+														
 													}
 												} catch (Exception e) {
 													System.out.println("no books present in library");
@@ -428,32 +467,32 @@ public class LibraryController {
 
 													List<RequestBean> requestInfos = service.showRequests();
 													for (RequestBean info1 : requestInfos) {
-														System.out.println("........................");
-														System.out.println("Book id ---------- " + info1.getBookInfo().getBookId());
-														System.out.println("Book Name -------- " + info1.getBookInfo().getBookAuthor());
-														System.out.println("User id----------- " + info1.getStudentInfo().getStudentId());
-														System.out.println("User Name -------- " + info1.getStudentInfo().getStudentName());
-														System.out.println("Book Issued ------" + info1.isIssued());
-														System.out.println("Book Returned------" + info1.isReturned());
-														System.out.println(".........................");
+
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",
+																info1.getBookInfo().getBookId(),info1.getBookInfo().getBookAuthor(),info1.getStudentInfo().getStudentId(),
+																info1.getStudentInfo().getStudentName(),info1.isIssued(),info1.isReturned()));
+
+																								System.out.println(".........................");
 
 													}
-												} catch (Exception e) {
-													System.out.println("no books present in library");
+												} catch (LMSException e) {
+													System.err.println(e.getMessage());
 												}
 												break;
 											case 10:
 												System.out.println("Receive Returned Book");
 												System.out.println("-----------------------");
 												System.out.println("Enter Student Id");
-												int user_Id = scanner.nextInt();
+												userId= checkId();
 												System.out.println("Enter Book Id");
-												int book_id = scanner.nextInt();
+												bookId = scanner.nextInt();
 
 												StudentBean student = new StudentBean();
 												BookBean book = new BookBean();
-												student.setStudentId(user_Id);;
-												book.setBookId(book_id);
+												student.setStudentId(userId);;
+												book.setBookId(bookId);
 												boolean isReceive = service.isBookReceived(student, book);
 												if(isReceive) {
 													System.out.println(" Received Returned book");
@@ -491,7 +530,7 @@ public class LibraryController {
 					} while(true);
 
 				case 2:
-					StudentServiceDAO service1 = LibraryFactory.getUserService();
+
 
 					do {
 						try {
@@ -500,105 +539,52 @@ public class LibraryController {
 							System.out.println("Press 2 to Student Login");
 							System.out.println("3 to exit");
 							System.out.println("-----------------------------------");
-							int choice = scanner.nextInt();
+							choice = checkChoice();
 							switch (choice) {
 							case 1:
-								do {
-									try {
-										System.out.println("Enter ID :");
-										id2 = scanner.nextInt();
-										validation.validatedId(id2);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Id should contains only digits");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
 
-								do {
-									try {
-										System.out.println("Enter Name :");
-										name2 = scanner.next();
-										validation.validatedName(name2);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Name should contains only Alphabates");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
-
-								do {
-									try {
-										System.out.println("Enter Mobile :");
-										mobile2 = scanner.nextLong();
-										validation.validatedMobile(mobile2);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Mobile Number  should contains only numbers");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
-
-								do {
-									try {
-										System.out.println("Enter Email :");
-										email2 = scanner.next();
-										validation.validatedEmail(email2);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Email should be proper ");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
-
-								do {
-									try {
-										System.out.println("Enter Password :");
-										password2 = scanner.next();
-										validation.validatedPassword(password2);
-										flag = true;
-									} catch (InputMismatchException e) {
-										flag = false;
-										System.err.println("Enter correct Password ");
-									} catch (LMSException e) {
-										flag = false;
-										System.err.println(e.getMessage());
-									}
-								} while (!flag);
+								System.out.println("Enter Stude Registration Details");
+								System.out.println("---------------------------------");
+								//							System.out.println("Enter User id :");
+								//							userId = checkId();
+								//							userId = rand.nextInt(1000); 
+								userId = (int) (Math.random()*1000);
+								if(userId <= 100) {
+									userId =userId + 100;
+								}
+								System.out.println("User Id : "+ userId);
+								scanner.nextLine();
+								System.out.println("Enter User name");
+								name = checkName();
+								System.out.println("Enter mobile number");
+								mobile=checkPhone();
+								System.out.println("Enter User Email Id");
+								emailId = checkEmailId();
+								System.out.println("Enter User password");
+								password = checkPassword();
 
 								StudentBean bean1 = new StudentBean();
-								bean1.setStudentId(id2);
-								bean1.setStudentName(name2);
-								bean1.setPhone(mobile2);
-								bean1.setEmail(email2);
-								bean1.setPassword(password2);
+								bean1.setStudentId(userId);
+								bean1.setStudentName(name);
+								bean1.setPhone(mobile);
+								bean1.setEmail(emailId);
+								bean1.setPassword(password);
 
 								boolean check = service1.register(bean1);
 								if(check) {
-									System.out.println("Registered");
+									System.out.println("Book Added");
 								} else {
-									System.out.println("Email already exist");
+									System.out.println("Book already exist");
 								}
 								break;
+
 							case 2:
 								System.out.println("Enter email :");
-								String email = scanner.next();
+								emailId = checkEmailId();
 								System.out.println("Enter Password :");
-								String password = scanner.next();
+								password = checkPassword();
 								try {
-									StudentBean login = service1.auth(email, password);
+									StudentBean login = service1.auth(emailId, password);
 									System.out.println("Logged in");
 									do {
 										try {
@@ -614,107 +600,125 @@ public class LibraryController {
 											int choice2 = scanner.nextInt();
 											switch (choice2) {
 											case 1:
-												System.out.println("Search the book by the Author Name :");
-												String author = scanner.next();
+												 
+														System.out.println("Search the book by the Author Name:");
+														bookAuthor = checkName();
 
-												BookBean bean2 = new BookBean();
-												bean2.setBookAuthor(author);
-												List<BookBean> bookauthor = service1.searchBookAuthor(author);
-												for (BookBean bookBean : bookauthor) {
+														BookBean bean3 = new BookBean();
+														bean3.setBookAuthor(bookAuthor);
+														List<BookBean> bookauthor = service1.searchBookAuthor(bookAuthor);
+														for (BookBean bookBean : bookauthor) {
 
-													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
-														System.out.println("----------------------------------------");
-													} else {
-														System.out.println("No books are available written by this author");
-													}
-												}
-												break;
+															if (bookBean != null) {
+																System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+																System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),
+																		bookBean.getBookName(),bookBean.getBookAuthor(),bookBean.getCategory(),bookBean.getPublisherName()));
+																
+															} else {
+																System.out.println("No books are available written by this author");
+															}
+														}
+														break;
+														
+
+												
+
 											case 2:
-												System.out.println("Search the book by the Book_Title :");
-												String book_Name = scanner.next();
+												System.out.println("  Search the book by the BookTitle :");
+												bookTitle=checkName();
 
-												BookBean bean3 = new BookBean();
-												bean3.setBookName(book_Name);
-												List<BookBean> booktitle = service1.searchBookTitle(book_Name);
+												BookBean bean4 = new BookBean();
+												bean4.setBookName(bookTitle);
+												List<BookBean> booktitle = service1.searchBookTitle(bookTitle);
 												for (BookBean bookBean : booktitle) {	
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
-														System.out.println("-----------------------------------");
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor(),
+																bookBean.getCategory(),bookBean.getPublisherName()));
 													} else {
 														System.out.println("No books are available with this title.");
 													}
 												}
 												break;
-											case 3:
-												System.out.println(" Search the book by the Book_Category :");
-												String book_Category = scanner.next();
+												
 
-												BookBean bean4 = new BookBean();
-												bean4.setCategory(book_Category);;
-												List<BookBean> bookIds = service1.searchBookType(book_Category);
+											case 3:
+												System.out.println("Search the book by the Book_Category :");
+												bookCategory = checkName();
+
+
+												BookBean bean5 = new BookBean();
+												bean5.setCategory(bookCategory);
+												List<BookBean> bookIds = service1.searchBookType(bookCategory);
 												for (BookBean bookBean : bookIds) {
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
-														System.out.println("...........................................");
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor(),
+																bookBean.getCategory(),bookBean.getPublisherName()));
+														
 													} else {
 														System.out.println("No books are available with this Id.");
 													}
 												}
 												break;
+
+												
+
 											case 4:
-												LinkedList<BookBean> info = service1.getBooksInfo();
+												ArrayList<BookBean> info = service1.getBooksInfo();
 												for (BookBean bookBean : info) {
 
 													if (bookBean != null) {
-														System.out.println("-----------------------------------");
-														System.out.println("Book_Id is-->"+bookBean.getBookId());
-														System.out.println("Book_Name is-->"+bookBean.getBookName());
-														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
-														System.out.println("Book_Category is-->"+bookBean.getCategory());
-														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
-														System.out.println("..........................................");
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s","BOOKID" ,
+																"BOOKNAME","BOOKAUTHOR","BOOKCATEGORY","PUBLISHERNAME"));
+														System.out.println(String.format("%-10s %-10s %-10s %-10s %-10s",
+																bookBean.getBookId(),bookBean.getBookName(),bookBean.getBookAuthor(),bookBean.getCategory(),bookBean.getPublisherName()));
+														//														
+														//														System.out.println("-----------------------------------");
+														//														System.out.println("Book_Id is-->"+bookBean.getBookId());
+														//														System.out.println("Book_Name is-->"+bookBean.getBookName());
+														//														System.out.println("Book_Author is-->"+bookBean.getBookAuthor());
+														//														System.out.println("Book_Category is-->"+bookBean.getCategory());
+														//														System.out.println("Book_PublisherName is-->"+bookBean.getPublisherName());
 													} else {
 														System.out.println("Books info is not present");
 													}
 												}
+
 												break;
+
 											case 5:
 
 												System.out.println("Enter user id");
-												int userId = scanner.nextInt();
+												userId = checkId();
 												StudentBean userBean = new StudentBean();
 												userBean.setStudentId(userId);
 
 												System.out.println("Enter book id");
-												int bId = scanner.nextInt();
+												bookId = checkId();
 												BookBean bookBean = new BookBean();
-												bookBean.setBookId(bId);
+												bookBean.setBookId(bookId);
 
 												try {
 													RequestBean request = service1.bookRequest(userBean, bookBean);
-													System.out.println("Request placed to admin");
-													System.out.println("-----------------------------------");
-													System.out.println("User Id-----" + request.getStudentInfo().getStudentId());
-													System.out.println("User name---" + request.getStudentInfo().getStudentName());
-													System.out.println("Book Id-----" + request.getBookInfo().getBookId());
-													System.out.println("Book Name---" + request.getBookInfo().getBookName());
-													System.out.println("............................................");
+
+
+													System.out.println(String.format("%-10s %-10s %-10s %-10s ","USERID" ,
+															"USERNAME","BOOKID","BOOKNAME"));
+													System.out.println(String.format("%-10s %-10s %-10s %-10s ",
+															request.getStudentInfo().getStudentId(),request.getStudentInfo().getStudentName(),request.getStudentInfo().getStudentName(),
+															request.getBookInfo().getBookName()));
+
+
+													//													System.out.println("Request placed to admin");
+													//													System.out.println("-----------------------------------");
+													//													System.out.println("User Id-----" + request.getStudentInfo().getStudentId());
+													//													System.out.println("User name---" +request.getStudentInfo().getStudentId());
+													//													System.out.println("Book Id-----" + request.getStudentInfo().getStudentId());
+													//													System.out.println("Book Name---" + request.getStudentInfo().getStudentId());
+													//													System.out.println("............................................");
 
 												} catch (Exception e) {
 
@@ -726,22 +730,27 @@ public class LibraryController {
 												System.out.println("Returning a book:");
 												System.out.println("------------------");
 												System.out.println("Enter User Id :");
-												int user  = scanner.nextInt();
+												userId  = checkId();
 												System.out.println("Enter Book Id : ");
-												int book = scanner.nextInt();
+												bookId = checkId();
 												StudentBean userBean7 = new StudentBean();
-												userBean7.setStudentId(user);;
+												userBean7.setStudentId(userId);;
 												BookBean bookBean7 = new BookBean();
-												bookBean7.setBookId(book);;
+												bookBean7.setBookId(bookId);;
 
 												try {
 													RequestBean requestInfo = service1.bookReturn(userBean7, bookBean7);
-													System.out.println("Book is Returning to Admin");
-													System.out.println("-----------------------------------");
-													System.out.println("User Id ------"+requestInfo.getStudentInfo().getStudentId());
-													System.out.println("Book Id ------"+requestInfo.getBookInfo().getBookId());
-													System.out.println("Is Returning --"+requestInfo.isReturned());
-													System.out.println(".........................................");
+													System.out.println(String.format("%-10s %-10s %-10s %-10s ","USERID" ,
+															"BOOKID","ISRETURNED"));
+													System.out.println(String.format("%-10s %-10s %-10s",requestInfo.getStudentInfo().getStudentId(),requestInfo.getBookInfo().getBookId(),
+															requestInfo.isReturned()));
+
+													//													System.out.println("Book is Returning to Admin");
+													//													System.out.println("-----------------------------------");
+													//													System.out.println("User Id ------"+requestInfo.getStudentInfo().getStudentId());
+													//													System.out.println("Book Id ------"+requestInfo.getBookInfo().getBookId());
+													//													System.out.println("Is Returning --"+requestInfo.isReturned());
+													//													System.out.println(".........................................");
 
 												} catch (Exception e) {
 													System.out.println("Invalid Return");
@@ -766,7 +775,7 @@ public class LibraryController {
 							case 3:
 								doReg();
 							default:
-								System.out.println("Invalid Choice");
+								System.out.println("Invalid Choice(only 1,2,3)");
 								break;
 							}
 						} catch (InputMismatchException ex) {
@@ -774,13 +783,13 @@ public class LibraryController {
 							scanner.nextLine();
 						}
 					} while(true);
-				}
-			}   catch (InputMismatchException ex)   {
-				System.out.println("Incorrect entry. Please input only a positive integer.");
-				scanner.nextLine();
-			}
+				
+		default:
+			System.err.println("Invalid Choice, Choice Must be in beween 1 and 2");
+			break;
+				}	
 		}while(true);
-
+		
 	}
 
 }

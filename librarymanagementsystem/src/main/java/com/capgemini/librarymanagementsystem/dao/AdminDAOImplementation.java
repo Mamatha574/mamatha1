@@ -1,5 +1,6 @@
 package com.capgemini.librarymanagementsystem.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -11,8 +12,6 @@ import com.capgemini.librarymanagementsystem.dto.BookBean;
 import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.StudentBean;
 import com.capgemini.librarymanagementsystem.exception.LMSException;
-
-
 public class AdminDAOImplementation implements AdminDAO {
 	Date date = new Date();
 	Date expectedReturnDate = new Date();
@@ -66,8 +65,8 @@ public class AdminDAOImplementation implements AdminDAO {
 		return true;
 	}
 
-	public LinkedList<BookBean> searchBookTitle(String bookName) {
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+	public ArrayList<BookBean> searchBookTitle(String bookName) {
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -89,9 +88,9 @@ public class AdminDAOImplementation implements AdminDAO {
 
 	}
 
-	public LinkedList<BookBean> searchBookAuthor(String bookAuthor) {
+	public ArrayList<BookBean> searchBookAuthor(String bookAuthor) {
 
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -112,8 +111,8 @@ public class AdminDAOImplementation implements AdminDAO {
 
 	}
 
-	public LinkedList<BookBean> searchBookType(String bookType) {
-		LinkedList<BookBean> searchList=new LinkedList<BookBean>();
+	public ArrayList<BookBean> searchBookType(String bookType) {
+		ArrayList<BookBean> searchList=new ArrayList<BookBean>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -133,20 +132,6 @@ public class AdminDAOImplementation implements AdminDAO {
 		}		
 	}
 
-	public boolean updateBook(int bookId) {
-		for(int i=0;i<=DataBase.book.size()-1;i++)
-		{
-			BookBean retrievedBook=DataBase.book.get(i);
-			int retrievedId=retrievedBook.getBookId();
-			if(bookId==retrievedId)
-			{
-				break;
-			}
-		}
-		throw new LMSException("Book not updated");
-	}
-
-
 	public boolean removeBook(int bookId) {
 		boolean status=false;
 		for(int i=0;i<=DataBase.book.size()-1;i++)
@@ -164,8 +149,8 @@ public class AdminDAOImplementation implements AdminDAO {
 
 	}
 
-	public LinkedList<Integer> getBookIds() {
-		LinkedList<Integer> idList=new LinkedList<Integer>();
+	public ArrayList<Integer> getBookIds() {
+		ArrayList<Integer> idList=new ArrayList<Integer>();
 		for(int i=0;i<=DataBase.book.size()-1;i++)
 		{
 			BookBean retrievedBook=DataBase.book.get(i);
@@ -175,7 +160,7 @@ public class AdminDAOImplementation implements AdminDAO {
 		return idList;
 	}
 
-	public LinkedList<BookBean> getBooksInfo() {
+	public ArrayList<BookBean> getBooksInfo() {
 		return DataBase.book;
 	}
 

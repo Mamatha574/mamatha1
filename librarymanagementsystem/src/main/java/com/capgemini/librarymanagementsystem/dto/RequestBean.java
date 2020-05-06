@@ -2,9 +2,10 @@ package com.capgemini.librarymanagementsystem.dto;
 
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
 import java.util.Date;
 
+@SuppressWarnings("serial")
 public class RequestBean implements Serializable {
 	private BookBean bookInfo;
 	private StudentBean studentInfo;

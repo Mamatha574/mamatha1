@@ -1,7 +1,7 @@
 package com.capgemini.librarymanagementsystem.dao;
 
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.capgemini.librarymanagementsystem.dto.AdminBean;
@@ -14,13 +14,12 @@ public interface AdminDAO {
 	boolean register (AdminBean adm);
 	AdminBean auth(String email,String password);
 	boolean addBook(BookBean book);
-	LinkedList<BookBean> searchBookTitle(String bookName);
-	LinkedList<BookBean> searchBookAuthor(String bookAuthor);
-	LinkedList<BookBean> searchBookType(String bookType);
-	boolean updateBook(int bookId);
+	ArrayList<BookBean> searchBookTitle(String bookName);
+	ArrayList<BookBean> searchBookAuthor(String bookAuthor);
+	ArrayList<BookBean> searchBookType(String bookType);
 	boolean removeBook(int bookId);
-	LinkedList<Integer> getBookIds();
-	LinkedList<BookBean> getBooksInfo();
+	ArrayList<Integer> getBookIds();
+	ArrayList<BookBean> getBooksInfo();
 
 	List<StudentBean> showUsers();
 	List<RequestBean> showRequests();

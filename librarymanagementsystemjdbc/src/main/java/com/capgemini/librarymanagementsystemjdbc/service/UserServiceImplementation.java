@@ -5,22 +5,22 @@ import java.util.List;
 
 import com.capgemini.librarymanagementsystemjdbc.dao.UserDAO;
 import com.capgemini.librarymanagementsystemjdbc.dto.BookBean;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookBorrow;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookIssuse;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookRequest;
-import com.capgemini.librarymanagementsystemjdbc.dto.User;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookBorrowBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookIssuseBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookRequestBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.UserBean;
 import com.capgemini.librarymanagementsystemjdbc.factory.LMSFactory;
 
 public class UserServiceImplementation implements UserService{
 	private UserDAO dao = LMSFactory.getUserDao();
 
 	@Override
-	public boolean register(User user) {
+	public boolean register(UserBean user) {
 		return dao.register(user);
 	}
 
 	@Override
-	public User login(String email, String password) {
+	public UserBean login(String email, String password) {
 		return dao.login(email, password);
 	}
 
@@ -54,7 +54,7 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public List<BookBorrow> borrowedBook(int userId) {
+	public List<BookBorrowBean> borrowedBook(int userId) {
 
 		return dao.borrowedBook(userId);
 	}
@@ -83,7 +83,7 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public LinkedList<BookIssuse> bookHistoryDetails(int userId) {
+	public LinkedList<BookIssuseBean> bookHistoryDetails(int userId) {
 
 		return dao.bookHistoryDetails(userId);
 	}
@@ -94,17 +94,17 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public LinkedList<BookRequest> showRequests() {
+	public LinkedList<BookRequestBean> showRequests() {
 		return dao.showRequests();
 	}
 
 	@Override
-	public LinkedList<BookIssuse> showIssuedBooks() {
+	public LinkedList<BookIssuseBean> showIssuedBooks() {
 		return dao.showIssuedBooks();
 	}
 
 	@Override
-	public LinkedList<User> showUsers() {
+	public LinkedList<UserBean> showUsers() {
 		return dao.showUsers();
 	}
 

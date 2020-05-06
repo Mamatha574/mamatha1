@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.capgemini.librarymanagementsystemjdbc.dto.BookBean;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookBorrow;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookIssuse;
-import com.capgemini.librarymanagementsystemjdbc.dto.BookRequest;
-import com.capgemini.librarymanagementsystemjdbc.dto.User;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookBorrowBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookIssuseBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.BookRequestBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.UserBean;
 import com.capgemini.librarymanagementsystemjdbc.exception.LMSException;
 import com.capgemini.librarymanagementsystemjdbc.factory.LMSFactory;
 import com.capgemini.librarymanagementsystemjdbc.service.UserService;
@@ -17,7 +17,7 @@ import com.capgemini.librarymanagementsystemjdbc.validation.Validation;
 
 public class LMSController {
 	public static void main(String[] args) {
-		doRegistration();
+		Library.doRegistration();
 	}
 	public static void doRegistration() {
 		boolean flag = false;
@@ -31,6 +31,7 @@ public class LMSController {
 
 		boolean loginStatus = true;
 		Validation validation = new Validation();
+		
 		do {
 			try(Scanner scanner = new Scanner(System.in);){
 				System.out.println("Press 1 to User Register");
@@ -132,7 +133,7 @@ public class LMSController {
 							} while (!flag);
 							System.out.println("Enter the Role : admin (or) student ");
 							String regRole = scanner.next();
-							User ai = new User();
+							UserBean ai = new UserBean();
 							ai.setUserId(id);
 							ai.setFirstName(firstName);
 							ai.setLastName(lastName);
@@ -155,7 +156,7 @@ public class LMSController {
 							System.out.println("Enter Password");
 							String password=scanner.next();
 							try {
-								User loginInfo=service1.login(email, password);
+								UserBean loginInfo=service1.login(email, password);
 								if(loginInfo.getEmail().equals(email) && loginInfo.getPassword().equals(password)) {
 									System.out.println("Logged In");
 								}
@@ -342,8 +343,8 @@ public class LMSController {
 										case 8:
 											System.out.println("Users are:");
 											try {
-												List<User> users = service1.showUsers();
-												for (User Bean : users) {	
+												List<UserBean> users = service1.showUsers();
+												for (UserBean Bean : users) {	
 													if (Bean != null) {
 														System.out.println("-----------------------------------------------");
 														System.out.println("User_Id is-->"+Bean.getUserId());
@@ -369,8 +370,8 @@ public class LMSController {
 											int user_Id = scanner.nextInt();
 
 											try {
-												List<BookIssuse> uid = service1.bookHistoryDetails(user_Id);
-												for (BookIssuse issueDetails : uid) {
+												List<BookIssuseBean> uid = service1.bookHistoryDetails(user_Id);
+												for (BookIssuseBean issueDetails : uid) {
 													if(issueDetails != null  ) {
 														System.out.println("-----------------------------------------------");
 														System.out.println("No of books Borrowed :"+issueDetails.getUserId());
@@ -387,8 +388,8 @@ public class LMSController {
 										case 10:
 											System.out.println(" Requests received are:");
 											try {
-												List<BookRequest> requests = service1.showRequests();
-												for (BookRequest requestBean : requests) {	
+												List<BookRequestBean> requests = service1.showRequests();
+												for (BookRequestBean requestBean : requests) {	
 													if (requestBean != null) {
 														System.out.println("-----------------------------------------------");
 														System.out.println("User_Id is-->"+requestBean.getUserId());
@@ -407,8 +408,8 @@ public class LMSController {
 										case 11:
 											System.out.println("Issued Books are:");
 											try {
-												List<BookIssuse> issuedBooks = service1.showIssuedBooks();
-												for (BookIssuse issueBean : issuedBooks) {	
+												List<BookIssuseBean> issuedBooks = service1.showIssuedBooks();
+												for (BookIssuseBean issueBean : issuedBooks) {	
 													if (issueBean != null) {
 														System.out.println("-----------------------------------------------");
 														System.out.println("Book_Id is-->"+issueBean.getBookId());
@@ -525,8 +526,8 @@ public class LMSController {
 												int user_Id = scanner.nextInt();
 												try {
 													if(loginInfo.getUserId()==user_Id) {
-														List<BookBorrow> borrowedBookList = service1.borrowedBook(user_Id);
-														for (BookBorrow bookBean : borrowedBookList) {
+														List<BookBorrowBean> borrowedBookList = service1.borrowedBook(user_Id);
+														for (BookBorrowBean bookBean : borrowedBookList) {
 
 															if (bookBean != null) {
 																System.out.println("-----------------------------------------------");
