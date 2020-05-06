@@ -16,7 +16,7 @@ import com.capgemini.librarymanagementsystem.service.StudentServiceDAO;
 import com.capgemini.librarymanagementsystem.validation.Validation;
 
 public class Library {
-	public static void doReg() {
+	public static void doRegistration() {
 
 		boolean flag = false;
 
