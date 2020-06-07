@@ -1,0 +1,26 @@
+<div class="alert alert-success" *ngIf='message' >{{ message }}</div>
+<div class="container mt-4"> 
+    <table  class="table table-bordered" style="margin-top: 4px;">
+        <thead class="thead" style="background-color:rgba(44, 85, 218, 0.37);">
+                 <tr style = "background: lightblue;">
+                <th>Book ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Publisher</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let bookbean of books' style="background: lightblue;">
+                <td>{{bookbean.bid}}</td>
+                <td>{{bookbean.bookName}}</td>
+                <td>{{bookbean.author}}</td>
+                <td>{{bookbean.category}}</td>
+                <td>{{bookbean.publisher}}</td>
+                <td><button type="submit" class="btn btn-outline-primary " (click)='deleteBook(bookbean)'><i class="fa fa-eraser" aria-hidden="true"></i></button></td>
+                
+            </tr>
+
+        </tbody>
+    </table>

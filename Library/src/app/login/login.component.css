@@ -1,0 +1,10 @@
+.card {
+    background-color:gainsboro;
+   
+
+}
+.container{
+    padding-top: 100 !important;
+    padding-bottom: 100!important;
+    min-height: 10px !important;
+}

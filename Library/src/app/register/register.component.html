@@ -1,0 +1,76 @@
+<div class="alert alert-danger" *ngIf='error'>{{error}}</div>
+<div class="alert alert-success" *ngIf='message'>{{message}}</div>
+<div class="container mt-4">
+  <div class="card col-md-4 offset-4">
+    <div class="card-body">
+        <h2 class="h2 text-center">Register</h2>
+        <form #registerForm='ngForm' (ngSubmit)='registerUser(registerForm)'>
+      
+        <div class="form-group ">
+            <label for="firstName">FirstName:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" #firstName='ngModel' ngModel
+                required pattern="[a-zA-Z\s]*">
+        </div>
+        <div *ngIf="firstName.touched && firstName.invalid">
+            <p class="alert alert-danger" *ngIf="firstName.errors.required">FirstName is required</p>
+            <p class="alert alert-danger" *ngIf="firstName.errors.pattern">Accepts only Alphabets</p>
+        </div>
+
+        <div class="form-group ">
+            <label for="lastName">LastName:</label>
+            <input type="lastName" class="form-control" id="lastName" name="lastName" #lastName='ngModel' ngModel
+                required pattern="[a-zA-Z]*">
+        </div>
+        <div *ngIf="lastName.touched && lastName.invalid">
+            <p class="alert alert-danger" *ngIf="lastName.errors.required">LastName is required</p>
+            <p class="alert alert-danger" *ngIf="lastName.errors.pattern">Accepts only Alphabets</p>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="xyz@gmail.com"
+                #email='ngModel' ngModel required minlength="10"
+                pattern="^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(gmail)\.com$">
+
+        </div>
+
+        <div *ngIf="email.touched && email.invalid">
+            <p class="alert alert-danger" *ngIf="email.errors.required">Email is required</p>
+            <p class="alert alert-danger" *ngIf="email.errors.pattern">Enter proper email</p>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" #password='ngModel' ngModel
+                required minlength="3">
+        </div>
+        <div *ngIf="password.touched && password.invalid">
+            <p class="alert alert-danger" *ngIf="password.errors.required">Password is required</p>
+            <p class="alert alert-danger" *ngIf="password.errors.minlength">Accepts minimum 3 characters (or) numbers</p>
+        </div>
+        <div class="form-group">
+            <label for="mobile">MobileNo:</label>
+            <input type="text" class="form-control" id="mobile" name="mobile" #mobile='ngModel' ngModel required
+                minlength="10" pattern="[7-9]{1}[0-9]{9}">
+        </div>
+        <div *ngIf="mobile.touched && mobile.invalid">
+            <p class="alert alert-danger" *ngIf="mobile.errors.required">Mobile Number is required</p>
+            <p class="alert alert-danger" *ngIf="mobile.errors.pattern">Accepts only 10 digits,
+                number should start with(7,8,9)</p>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select name="role" id="role" #role='ngModel' ngModel class="form-control" required>
+                <option value="admin"><i class="fa fa-user" aria-hidden="true"></i>Admin</option>
+                <option value="student"><i class="fa fa-user" aria-hidden="true"></i>Student</option>
+            </select>
+        </div>
+        <div *ngIf="role.touched && role.invalid">
+            <p class="alert alert-danger" *ngIf="role.errors.required">Role is required</p>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid">Sign in</button>
+</form>
+   </div>
+    </div>
+</div>
